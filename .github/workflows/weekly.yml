@@ -1,0 +1,22 @@
+name: weekly-reconcile
+on:
+  schedule: [ { cron: "0 3 * * 1" } ]  # Mondays 03:00 UTC
+  workflow_dispatch:
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12", cache: "pip" }
+      - run: pip install -r requirements.txt
+      - run: python main.py --budget data/budget_plan.csv --actual data/actual_spend.csv --output artifacts/report.pptx
+      - uses: actions/upload-artifact@v4
+        with: { name: budget-report, path: artifacts/** }
+      - name: Commit updated artifacts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add artifacts || true
+          git commit -m "chore: weekly reconcile" || echo "no changes"
+          git push
