@@ -106,5 +106,5 @@ CLI output path defaults to artifacts/report.pptx.
 
 ## 👨‍💻 Author
 
-Portfolio project by Raghav HVR
+Portfolio project by Raghav
 Part of the AI Automation Portfolio showcasing business-focused AI tools.
